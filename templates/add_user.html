@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>You can add a user using fields below: </h2> <br>
+<form action="{{url_for('define_user')}}", method="POST">
+	<p>Username: <input type="text" name="username"></p>
+	<p>Password: <input type="password" name="password"> </p>
+	<input type="submit" name="submit-user" value="submit">
+</form>
+
+
+{% endblock %}

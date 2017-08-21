@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>send your secure message </h1>
+<form action="{{url_for('send_message_user')}}" method="POST">
+	<p>type your message below</p>
+	<textarea id="message" name="message" rows="10" cols="50"> </textarea>
+	<p>send your message as</p>
+	<select id="dropBox" name="user">
+	{% for elements in usernames %}
+	  <option value={{elements}}>{{elements}}</option>
+	{% endfor %}
+	</select>
+	<input type="submit", name="send">	
+</form>
+{% endblock %}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Survey App</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+</head>
+<body>
+	<body>
+		<div class="container">
+			<!--child template-->
+			{% block content %} {% endblock %}
+			<br><br>
+			{% for messages in get_flashed_messages() %}
+			  {{ messages }}
+			{% endfor %}
+			{% if session['logged_in'] == True %}
+			 <a href="{{url_for('logout')}}"> logout </a>
+			{% endif %}
+		</div>		
+	</body>
+</body>
+</html>

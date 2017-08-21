@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="username_and_password">
+	<h1> Please Login: </h1>
+	<form action="" method="POST">
+		<input type="text" placeholder="username" name="username" value="{{ request.form.username }}">
+		<input type="password" placeholder="password" name="password" value="{{ request.form.password}}">
+		<input class="default_btn" type="submit" value="login">
+	</form>
+	{% if error %}
+	 <p class="error"><strong>ERROR:</strong> {{error}} </p>
+	{% endif %}
+</section>
+
+{% endblock %}

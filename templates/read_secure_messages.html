@@ -1,0 +1,19 @@
+<p>read the secure messages below. trusted and untrusted messages are outlined</p>
+<table border="1px" width="50%">
+	<tr>
+		<th> message </th>
+		<th> sender </th>
+		<th>description</th>
+	</tr>
+{% for elements in messages %}
+	<tr>
+		<td> {{elements[0]}} </td>
+		<td> {{elements[1]}} </td>
+		{% if elements[2] == 'Trusted' %}
+		<td><font color="green">{{elements[2]}}</font></td>
+		{% else %}
+		<td><font color="red">{{elements[2]}}</font></td>
+		{% endif %}
+	</tr>
+{% endfor %}
+</table>
