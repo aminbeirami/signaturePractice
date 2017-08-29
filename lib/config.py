@@ -4,8 +4,8 @@ import os
 
 SERVER = '127.0.0.1'
 USERNAME = "root"
-PASSWORD = "db password"
-DATABASE = "db name"
+PASSWORD = "amin123"
+DATABASE = "secure_signature"
 
 #SecretKey is used to encrypt the session cookies
 

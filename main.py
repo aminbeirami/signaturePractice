@@ -134,6 +134,40 @@ def read_messages():
     messageList = fcn.receive_messages()
     return render_template('read_secure_messages.html', messages = messageList)
 
+@app.route('/update_message', methods = ['POST', 'GET'])
+def update_messages():
+    toBeEditedMessage = None
+    if request.method == 'POST':
+        print request.form.items()
+        messageList = fcn.receive_messages()
+        requestedAction = request.form.items()
+        action = requestedAction[0][0]
+        messageid = requestedAction[0][1]
+        if action == 'edit':
+            toBeEditedMessage = fcn.fetch_message_by_id(messageid)
+        amin = request.form.items()
+        return render_template('update_message.html', messages = messageList, toEdit = toBeEditedMessage, mid = messageid)
+    else:
+        messageList = fcn.receive_messages()
+        return render_template('update_message.html', messages = messageList, toEdit = toBeEditedMessage)
+
+@app.route('/edit_message', methods =['POST','GET'])
+@login_required
+@admin_required
+def edit_message():
+    messageid = request.form['messageid']
+    messageText = request.form['editedMessage']
+    username = session['user']
+    fcn.edit_message(messageid,messageText,username)
+    flash('Your changes submitted successfully')
+    return redirect(url_for('update_messages'))
+
+@app.route('/view_events')
+def view_events():
+    events = fcn.check_events()
+    return render_template('events.html',events = events)
+
+
 if __name__ == '__main__':
 	app.debug = True
 	app.run()

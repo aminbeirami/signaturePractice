@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<p>read the secure messages below. trusted and untrusted messages are outlined</p>
+<table border="1px" width="50%">
+	<tr>
+		<th> message </th>
+		<th> sender </th>
+		<th>description</th>
+		<th></th>
+		<th></th>
+	</tr>
+{% for elements in messages %}
+	<tr>
+		<td> {{elements[0]}} </td>
+		<td> {{elements[1]}} </td>
+		{% if elements[2] == 'Trusted' %}
+		<td><font color="green">{{elements[2]}}</font></td>
+		{% else %}
+		<td><font color="red">{{elements[2]}}</font></td>
+		{% endif %}
+		<form action="{{url_for('update_messages')}}" name="Hi" method="POST">
+			<td><button name="edit" value={{elements[3]}}><img src="/static/edit.png" height="20px"></button></td>
+			<td><button name="delete" value={{elements[4]}}><img src="/static/delete.png" height="20px"></button></td>
+		</form>
+	</tr>
+{% endfor %}
+</table>
+{% if toEdit != None %}
+	<br> <br>
+	<form action="{{url_for('edit_message')}}" name="Bye" method="POST">
+		<textarea name="editedMessage" rows="5" cols="50">{{toEdit}}</textarea>
+		<input type="hidden" name=messageid value={{mid}}>
+		<input type="submit" name="Edit" value="Edit"></input>
+	</form>
+{% endif %}
+{% endblock %}

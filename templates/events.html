@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<p>read the events below</p>
+<table border="1px" width="50%">
+	<tr>
+		<th> event description </th>
+	</tr>
+{% for elements in events %}
+	<tr>
+		<td> {{elements}} </td>
+	</tr>
+{% endfor %}
+{% endblock %}

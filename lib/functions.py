@@ -3,6 +3,7 @@ from lib import mySQLCon as mc
 from lib import keyGen as kg
 from lib.config import *
 from random import randint
+import datetime
 import os
 
 def connect_to_DB():
@@ -113,14 +114,48 @@ def check_signature(messageList):
         publickey = publickeyDict[sender]
         message = elements [0]
         signature = elements[2]
+        messageid = elements[3]
         authenticity = keyGen.verifying_signature(message,signature,publickey)
-        resultList.append((message,sender,authenticity))
+        resultList.append((message,sender,authenticity,messageid))
     return resultList
 
 def receive_messages():
-    messages = []
     db = connect_to_DB()
-    sql = "SELECT message, user, signature FROM messages"
+    sql = "SELECT message, user, signature, mid FROM messages"
     results = db.query(sql,None)
     messageList = check_signature(results)
     return messageList
+
+def fetch_message_by_id(messageid):
+    db = connect_to_DB()
+    sql = "SELECT message FROM messages WHERE mid = (%s)"
+    parameters = (messageid,)
+    results = db.query(sql,parameters)[0][0]
+    return results
+
+def edit_message(messageid,message,username):
+    keyGen = kg.RSAEncryption()
+    privatekey = get_privatekey(username)
+    signature = keyGen.generate_signature(message, privatekey)
+    db = connect_to_DB()
+    sql = "UPDATE messages SET message = (%s), user = (%s), signature = (%s) WHERE mid = (%s)"
+    parameters =(message,username,signature,messageid)
+    db.insert(sql,parameters)
+    db.commit()
+def fetch_events():
+    events = []
+    db = connect_to_DB()
+    sql = "SELECT event,table_name,event_time,message,user FROM events"
+    results = db.query(sql,None)
+    return results
+def check_events():
+    eventSentences = []
+    eventsList = fetch_events()
+    eventsOption = {'I':'inserted','U':'updated','D':'deleted'}
+    for elements in eventsList:
+        if elements[1] != 'users':
+            eventText = "The user "+elements[4]+" "+ eventsOption[elements[0]]+ " the value '" + elements[3]+ "' to the "+elements[1] +" table."
+            eventSentences.append(eventText)
+        else:
+            print 'hi'
+    return eventSentences
